@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ProductContext from "./context/ProductContext";
 import Home from "./views/Home";
+import LoginPage from "./views/LoginPage";
+import RegisterPage from "./views/RegisterPage";
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
@@ -31,6 +33,8 @@ function App() {
       >
         <Routes>
           <Route element={<Home />} path="/" />
+          <Route element={<LoginPage />} path="/user/login" />
+          <Route element={<RegisterPage />} path="/register" />
         </Routes>
       </ProductContext.Provider>
     </div>
