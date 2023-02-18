@@ -14,6 +14,9 @@ import wide3 from "../images/carousel/wide3.jpg";
 import wide4 from "../images/carousel/wide4.jpg";
 import wide5 from "../images/carousel/wide5.jpg";
 import wide6 from "../images/carousel/wide6.jpg";
+import TrendingProduct from "../components/TrendingProducts";
+import Incentives from "../components/Incentives";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const carousel = [
@@ -29,7 +32,7 @@ const Home = () => {
     <div>
       <NavBar />
 
-      <div className="h-40 -z-20 relative items-center justify-center flex-1 flex">
+      <div className="h-80 -z-20 relative items-center justify-center flex-1 flex">
         <Swiper
           effect="fade"
           loop={true}
@@ -47,6 +50,9 @@ const Home = () => {
           })}
         </Swiper>
       </div>
+      <TrendingProduct />
+      <Incentives />
+      <Footer />
     </div>
   );
 };

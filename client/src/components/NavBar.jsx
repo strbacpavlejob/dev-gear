@@ -223,13 +223,12 @@ const NavBar = (props) => {
       .then((res) => {
         sessionStorage.setItem("userInSession", null);
         setUserSession(JSON.parse(sessionStorage.getItem("userInSession")));
-        console.log(res);
       })
       .catch((err) => console.error(err));
   };
 
   return (
-    <div className="bg-white sticky">
+    <div className="bg-white sticky top-0 z-50">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -272,7 +271,7 @@ const NavBar = (props) => {
                 <Tab.Group as="div" className="mt-2">
                   <div className="border-b border-gray-200">
                     <nav
-                      class="-mb-px flex space-x-8 overflow-x-auto"
+                      class="-mb-px flex space-x-8 overflow-x-auto overflow-y-hidden"
                       aria-label="Tabs"
                     >
                       <Tab.List className="-mb-px flex space-x-8 px-4">
