@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         emblema: "Emblema One",
-        fugaz: "New_Zelek",
+        pirulen: "Pirulen",
         rubik: "Rubik 80s Fade",
       },
       colors: {
@@ -16,5 +16,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/aspect-ratio")],
 };

@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import ProductContext from "./context/ProductContext";
+import Home from "./views/Home";
 
 function App() {
+  const [itemsInCart, setItemsInCart] = useState([]);
+  const [numInCart, setNumInCart] = useState(0);
+  const [shippingInfo, setShippingInfo] = useState({});
+
+  useEffect(() => {
+    const updateNumInCart = JSON.parse(sessionStorage.getItem("numInCart"));
+    setNumInCart(updateNumInCart);
+
+    const updateItemsInCart = JSON.parse(sessionStorage.getItem("itemsInCart"));
+    setItemsInCart(updateItemsInCart);
+  }, [numInCart]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ProductContext.Provider
+        value={{
+          itemsInCart,
+          setItemsInCart,
+          numInCart,
+          setNumInCart,
+          shippingInfo,
+          setShippingInfo,
+        }}
+      >
+        <Routes>
+          <Route element={<Home />} path="/" />
+        </Routes>
+      </ProductContext.Provider>
     </div>
   );
 }
