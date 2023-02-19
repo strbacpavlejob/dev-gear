@@ -6,11 +6,7 @@ import ProductContext from "../context/ProductContext";
 
 const QuickView = (props) => {
   const [open, setOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedPlug, setSelectedPlug] = useState(product.plugs[2]);
-
-  const [plugs, setPlugs] = useState(props.productPlugs);
-  const [productPlug, setProductPlug] = useState("");
+  const [productPlug, setProductPlug] = useState([]);
   const [product, setProduct] = useState(props.product);
 
   const setItemsInCart = useContext(ProductContext).setItemsInCart;
@@ -20,7 +16,7 @@ const QuickView = (props) => {
   useEffect(() => {
     setOpen(props.isOpen);
     setProductPlug(product.plug);
-    setProduct({ ...product, quantity: 1, plug: plugs[0] });
+    setProduct({ ...product, quantity: 1, plug: props.product.plug[0] });
   }, [props.isOpen]);
 
   const plugHandler = (e) => {
@@ -176,16 +172,21 @@ const QuickView = (props) => {
                               >
                                 <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                   <div className="py-1">
-                                    {plugs?.map((plug, plugIdx) => (
-                                      <Menu.Item key={plug + plugIdx} id={plug}>
-                                        <p
-                                          onClick={(e) => plugHandler(e)}
-                                          className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
+                                    {props.product.plug?.map(
+                                      (plug, plugIdx) => (
+                                        <Menu.Item
+                                          key={plug + plugIdx}
+                                          id={plug}
                                         >
-                                          {plug}
-                                        </p>
-                                      </Menu.Item>
-                                    ))}
+                                          <p
+                                            onClick={(e) => plugHandler(e)}
+                                            className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
+                                          >
+                                            {plug}
+                                          </p>
+                                        </Menu.Item>
+                                      )
+                                    )}
                                   </div>
                                 </Menu.Items>
                               </Transition>

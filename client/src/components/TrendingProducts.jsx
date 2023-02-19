@@ -11,10 +11,10 @@ const TrendingProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/products")
+      .get("http://localhost:8000/product")
       .then((res) => {
-        const allProducts = res.data.products;
-        setProducts(allProducts);
+        const allProducts = res.data;
+        setProducts(allProducts.slice(0, 4));
       })
       .catch((err) => console.log(err));
   }, []);
