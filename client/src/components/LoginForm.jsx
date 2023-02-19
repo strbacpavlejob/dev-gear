@@ -15,7 +15,7 @@ const LoginForm = (props) => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:8000/api/login",
+        "http://localhost:8000/auth/local/signin",
         {
           email,
           password,
@@ -23,7 +23,7 @@ const LoginForm = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        sessionStorage.setItem("userInSession", res.data.user.userName);
+        sessionStorage.setItem("userInSession", res.data.username);
         setLogged(res.data.user);
         setUser(res.data.user);
         navigate("/");

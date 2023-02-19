@@ -20,7 +20,8 @@ export class AuthService {
 
     if (!isMatch) throw new UnauthorizedException('Credentials incorrect');
 
-    return this.signUser(user._id, user.email, 'user');
+    const token =  this.signUser(user._id, user.email, 'user');
+    return { token, username: user.userName};
   }
 
   signUser(userId: string, email: string, type: string) {

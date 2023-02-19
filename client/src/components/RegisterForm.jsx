@@ -17,9 +17,9 @@ const RegisterForm = (props) => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:8000/api/register",
+        "http://localhost:8000/user",
         {
-          userName,
+          username: userName,
           email,
           password,
           confirmPassword,
@@ -27,7 +27,7 @@ const RegisterForm = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        sessionStorage.setItem("userInSession", res.data.user.userName);
+        sessionStorage.setItem("userInSession", res.data.username);
         setLogged(res.data.user);
         setUser(res.data.user);
         navigate("/");
