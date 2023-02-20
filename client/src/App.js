@@ -5,6 +5,8 @@ import ProductContext from "./context/ProductContext";
 import Home from "./views/Home";
 import LoginPage from "./views/LoginPage";
 import RegisterPage from "./views/RegisterPage";
+import ViewAllProducts from "./views/ViewAllProducts";
+import ViewProduct from "./views/ViewProduct";
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
@@ -35,6 +37,8 @@ function App() {
           <Route element={<Home />} path="/" />
           <Route element={<LoginPage />} path="/user/login" />
           <Route element={<RegisterPage />} path="/register" />
+          <Route element={<ViewAllProducts />} path="/product/view-all" />
+          <Route element={<ViewProduct />} path="/product/:id" />
         </Routes>
       </ProductContext.Provider>
     </div>
