@@ -7,6 +7,7 @@ import LoginPage from "./views/LoginPage";
 import RegisterPage from "./views/RegisterPage";
 import ViewAllProducts from "./views/ViewAllProducts";
 import ViewProduct from "./views/ViewProduct";
+import ShoppingCartPage from "./views/ShoppingCartPage";
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
@@ -39,6 +40,7 @@ function App() {
           <Route element={<RegisterPage />} path="/register" />
           <Route element={<ViewAllProducts />} path="/product/view-all" />
           <Route element={<ViewProduct />} path="/product/:id" />
+          <Route element={<ShoppingCartPage />} path="/cart" />
         </Routes>
       </ProductContext.Provider>
     </div>
