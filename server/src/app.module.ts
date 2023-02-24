@@ -5,9 +5,11 @@ import mongodbConfig from './shared/config/mongodb.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost/devgear'),
     // ConfigModule.forRoot({
     //   load: [mongodbConfig],
@@ -25,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     UserModule,
     ProductModule,
+    StripeModule,
   ],
   controllers: [],
   providers: [],

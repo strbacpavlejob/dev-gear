@@ -8,6 +8,8 @@ import RegisterPage from "./views/RegisterPage";
 import ViewAllProducts from "./views/ViewAllProducts";
 import ViewProduct from "./views/ViewProduct";
 import ShoppingCartPage from "./views/ShoppingCartPage";
+import CheckoutPage from "./components/CheckoutPage";
+import OrderSummary from "./views/OrderSummary";
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
@@ -41,6 +43,8 @@ function App() {
           <Route element={<ViewAllProducts />} path="/product/view-all" />
           <Route element={<ViewProduct />} path="/product/:id" />
           <Route element={<ShoppingCartPage />} path="/cart" />
+          <Route element={<CheckoutPage />} path="/checkout" />
+          <Route element={<OrderSummary />} path="/summary" />
         </Routes>
       </ProductContext.Provider>
     </div>

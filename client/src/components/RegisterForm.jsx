@@ -49,7 +49,7 @@ const RegisterForm = (props) => {
         <div className="h-80 overflow-hidden hidden lg:block lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
           <img
             src={reg}
-            alt="colorful floating shoe"
+            alt="colorful floating"
             className="h-full w-full object-cover object-center"
           />
         </div>
