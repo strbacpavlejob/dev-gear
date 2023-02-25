@@ -5,7 +5,7 @@ export class CreateProductDto {
   @ApiProperty({ example: 'Smarthpne' })
   @IsString()
   itemType: string;
-  
+
   @ApiProperty({ example: 'Apple' })
   @IsString()
   brand: string;
@@ -13,21 +13,21 @@ export class CreateProductDto {
   @ApiProperty({ example: 'Iphone' })
   @IsString()
   name: string;
-  
+
   @ApiProperty({ example: 'some description' })
   @IsString()
   description: string;
 
-  @ApiProperty({ example: ['work', 'gaming', 'everyday']  })
+  @ApiProperty({ example: ['work', 'gaming', 'everyday'] })
   @IsString({ each: true })
   @IsArray()
   categories: string[];
-  
+
   @ApiProperty({ example: ['EU', 'US', 'UK'] })
   @IsString({ each: true })
   @IsArray()
   plug: string[];
-    
+
   @ApiProperty({ example: ['white', 'blue'] })
   @IsString({ each: true })
   @IsArray()

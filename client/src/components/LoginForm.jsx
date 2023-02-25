@@ -24,6 +24,7 @@ const LoginForm = (props) => {
       )
       .then((res) => {
         sessionStorage.setItem("userInSession", res.data.username);
+        sessionStorage.setItem("sessionToken", res.data.token);
         setLogged(res.data.user);
         setUser(res.data.user);
         navigate("/");

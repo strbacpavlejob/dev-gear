@@ -218,13 +218,9 @@ const NavBar = (props) => {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    axios
-      .get("http://localhost:8000/api/logout", { withCredentials: true })
-      .then((res) => {
-        sessionStorage.setItem("userInSession", null);
-        setUserSession(JSON.parse(sessionStorage.getItem("userInSession")));
-      })
-      .catch((err) => console.error(err));
+    sessionStorage.setItem("userInSession", null);
+    sessionStorage.setItem("sessionToken", null);
+    window.location.reload();
   };
 
   return (

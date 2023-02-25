@@ -21,7 +21,7 @@ const TrendingProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/products")
+      .get("http://localhost:8000/api/product")
       .then((res) => {
         const hoverArr = [];
         const allProducts = res.data.products;
