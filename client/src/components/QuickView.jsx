@@ -7,6 +7,7 @@ import ProductContext from "../context/ProductContext";
 const QuickView = (props) => {
   const [open, setOpen] = useState(false);
   const [productPlug, setProductPlug] = useState([]);
+  const [productColor, setProductColor] = useState([]);
   const [product, setProduct] = useState(props.product);
 
   const setItemsInCart = useContext(ProductContext).setItemsInCart;
@@ -16,12 +17,23 @@ const QuickView = (props) => {
   useEffect(() => {
     setOpen(props.isOpen);
     setProductPlug(product.plug);
-    setProduct({ ...product, quantity: 1, plug: props.product.plug[0] });
+    setProductColor(product.color);
+    setProduct({
+      ...product,
+      quantity: 1,
+      plug: props.product.plug[0],
+      color: props.product.colors[0],
+    });
   }, [props.isOpen]);
 
   const plugHandler = (e) => {
     setProductPlug(e.target.id);
     setProduct({ ...product, plug: e.target.id });
+  };
+
+  const colorHandler = (e) => {
+    setProductColor(e.target.id);
+    setProduct({ ...product, color: e.target.id });
   };
 
   const addToCart = (e) => {
@@ -32,7 +44,8 @@ const QuickView = (props) => {
       for (let i in currentProducts) {
         if (
           Object.values(currentProducts[i]).includes(product._id) &&
-          Object.values(currentProducts[i]).includes(product.plug)
+          Object.values(currentProducts[i]).includes(product.plug) &&
+          Object.values(currentProducts[i]).includes(product.color)
         ) {
           currentProducts[i].quantity++;
           sessionStorage.setItem(
@@ -170,7 +183,7 @@ const QuickView = (props) => {
                                 leaveFrom="transform opacity-100 scale-100"
                                 leaveTo="transform opacity-0 scale-95"
                               >
-                                <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <Menu.Items className="absolute left-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                   <div className="py-1">
                                     {props.product.plug?.map(
                                       (plug, plugIdx) => (
@@ -183,6 +196,55 @@ const QuickView = (props) => {
                                             className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                                           >
                                             {plug}
+                                          </p>
+                                        </Menu.Item>
+                                      )
+                                    )}
+                                  </div>
+                                </Menu.Items>
+                              </Transition>
+                            </Menu>
+                          </div>
+
+                          {/* Color picker */}
+                          <div className="flex items-center gap-3">
+                            <h2 className="font-medium">Color:</h2>
+                            <Menu
+                              as="div"
+                              className="relative inline-block text-left"
+                            >
+                              <div>
+                                <Menu.Button className="group inline-flex justify-center text-md items-center font-medium text-gray-700 hover:text-gray-900">
+                                  {productColor}
+                                  <ChevronDownIcon
+                                    className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-blue"
+                                    aria-hidden="true"
+                                  />
+                                </Menu.Button>
+                              </div>
+
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                              >
+                                <Menu.Items className="absolute left-0  z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  <div className="py-1">
+                                    {props.product.colors?.map(
+                                      (color, colorIdx) => (
+                                        <Menu.Item
+                                          key={color + colorIdx}
+                                          id={color}
+                                        >
+                                          <p
+                                            onClick={(e) => colorHandler(e)}
+                                            className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
+                                          >
+                                            {color}
                                           </p>
                                         </Menu.Item>
                                       )

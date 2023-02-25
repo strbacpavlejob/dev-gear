@@ -11,8 +11,11 @@ function classNames(...classes) {
 
 const ProductPage = (props) => {
   const [item, setItem] = useState({});
-  const [plugs, setSizes] = useState([]);
-  const [productSize, setProductSize] = useState("");
+  const [plugs, setPlugs] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [productPlug, setProductPlug] = useState("");
+  const [productColor, setProductColor] = useState("");
+
   const { id } = useParams();
   const setItemsInCart = useContext(ProductContext).setItemsInCart;
   const numInCart = useContext(ProductContext).numInCart;
@@ -24,8 +27,10 @@ const ProductPage = (props) => {
       .then((res) => {
         console.log(res.data.imgUrls);
         setItem({ ...res.data, quantity: 1, plug: res.data.plug[0] });
-        setSizes([...res.data.plug]);
-        setProductSize(res.data.plug[0]);
+        setPlugs([...res.data.plug]);
+        setColors([...res.data.colors]);
+        setProductPlug(res.data.plug[0]);
+        setProductColor(res.data.colors[0]);
       })
       .catch((err) => console.error(err));
   }, [id]);
@@ -73,8 +78,13 @@ const ProductPage = (props) => {
   };
 
   const plugHandler = (e) => {
-    setProductSize(e.target.id);
+    setProductPlug(e.target.id);
     setItem({ ...item, plug: e.target.id });
+  };
+
+  const colorHandler = (e) => {
+    setProductColor(e.target.id);
+    setItem({ ...item, color: e.target.id });
   };
 
   return (
@@ -130,14 +140,28 @@ const ProductPage = (props) => {
 
           {/* Product info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            {item.brand ? (
-              <h4 className="text-blue tracking-tight">{item.brand}</h4>
+            {item.itemType ? (
+              <h2 className="text-blue tracking-tight">{item.itemType}</h2>
             ) : (
               <p></p>
             )}
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {item.name}
-            </h1>
+            <span className="flex flex-row">
+              {item.brand ? (
+                <h4 className="text-3xl font-bold tracking-tight text-gray-900 pr-1">
+                  {item.brand}
+                </h4>
+              ) : (
+                <p></p>
+              )}
+              <h1 className="text-3xl font-bold tracking-tight text-gray-500 pr-1">
+                {item.name}
+              </h1>
+            </span>
+            <div className="mt-3">
+              <p className="text-3xl tracking-tight text-gray-900">
+                for {item.categories}
+              </p>
+            </div>
 
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
@@ -161,7 +185,7 @@ const ProductPage = (props) => {
                 <Menu as="div" className="relative inline-block text-left">
                   <div>
                     <Menu.Button className="group inline-flex justify-center items-center text-md font-medium text-gray-700 hover:text-gray-900">
-                      {productSize}
+                      {productPlug}
                       <ChevronDownIcon
                         className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-blue"
                         aria-hidden="true"
@@ -178,7 +202,7 @@ const ProductPage = (props) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute left-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         {plugs?.map((plug, plugIdx) => (
                           <Menu.Item key={plug + plugIdx} id={plug}>
@@ -187,6 +211,45 @@ const ProductPage = (props) => {
                               className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                             >
                               {plug}
+                            </p>
+                          </Menu.Item>
+                        ))}
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
+              <div className="flex items-center gap-3">
+                <h2 className="font-medium">Color:</h2>
+                <Menu as="div" className="relative inline-block text-left">
+                  <div>
+                    <Menu.Button className="group inline-flex justify-center items-center text-md font-medium text-gray-700 hover:text-gray-900">
+                      {productColor}
+                      <ChevronDownIcon
+                        className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-blue"
+                        aria-hidden="true"
+                      />
+                    </Menu.Button>
+                  </div>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute left-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {colors?.map((color, colorIdx) => (
+                          <Menu.Item key={color + colorIdx} id={color}>
+                            <p
+                              onClick={(e) => colorHandler(e)}
+                              className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
+                            >
+                              {color}
                             </p>
                           </Menu.Item>
                         ))}

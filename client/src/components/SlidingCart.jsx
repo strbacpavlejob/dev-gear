@@ -117,7 +117,7 @@ const SlidingCart = (props) => {
                                       <p className="ml-4">${product.price}</p>
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500">
-                                      Color: {product.colors[0]}
+                                      Color: {product.color}
                                     </p>
                                     <p className="mt-1 text-sm text-gray-500">
                                       Plug: {product.plug}

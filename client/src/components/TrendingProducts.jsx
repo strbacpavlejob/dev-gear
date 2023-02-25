@@ -57,17 +57,17 @@ const TrendingProduct = (props) => {
             Trending Products
           </h2>
           <div className="ml-4 flow-root lg:ml-6">
-            <div className="flex flex-row justify-center items-center">
+            <div className="flex flex-1 flex-row justify-center items-center w-20">
               <a
                 href="#"
-                className="hidden text-sm font-medium text-blue hover:text-indigo-500 md:block"
+                className="hidden mb:invisible flex-1 text-sm font-medium text-blue pr-1 md:block"
               >
                 Show all
-                <ArrowRightIcon
-                  className="h-6 w-6 flex-shrink-0 "
-                  aria-hidden="true"
-                />
               </a>
+              <ArrowRightIcon
+                className="hidden mb:invisible text-sm font-medium text-blue w-5 h-5 md:block"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
@@ -127,15 +127,16 @@ const TrendingProduct = (props) => {
             </div>
           ))}
         </div>
-
         <div className="mt-8 text-sm md:hidden">
-          <a href="#" className="font-medium text-blue hover:text-indigo-500">
-            Show all
+          <div className="flex flex-1 flex-row justify-center items-center w-20">
+            <a href="#" className="flex-1 text-sm font-medium text-blue  pr-1">
+              Show all
+            </a>
             <ArrowRightIcon
-              className="h-6 w-6 flex-shrink-0 "
+              className="text-sm font-medium text-blue  w-5 h-5"
               aria-hidden="true"
             />
-          </a>
+          </div>
         </div>
       </div>
     </div>
