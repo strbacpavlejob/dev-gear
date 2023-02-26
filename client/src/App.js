@@ -9,6 +9,7 @@ import ViewProduct from "./views/ViewProduct";
 import ShoppingCartPage from "./views/ShoppingCartPage";
 import CheckoutPage from "./components/CheckoutPage";
 import OrderSummary from "./views/OrderSummary";
+import AdminPage from "./views/AdminPage";
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
@@ -44,6 +45,7 @@ function App() {
           <Route element={<ShoppingCartPage />} path="/cart" />
           <Route element={<CheckoutPage />} path="/checkout" />
           <Route element={<OrderSummary />} path="/summary" />
+          <Route element={<AdminPage />} path="/admin" />
         </Routes>
       </ProductContext.Provider>
     </div>

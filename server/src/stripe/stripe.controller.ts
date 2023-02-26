@@ -52,7 +52,7 @@ export class StripeController {
     return this.stripeService.archiveStripeProduct(id);
   }
 
-  @Post('create-payment-intent')
+  @Post('pay')
   createPaymentIntent(@Body() createStripePaymentDto: CreateStripePaymentDto) {
     return this.stripeService.createPaymentIntent(createStripePaymentDto);
   }

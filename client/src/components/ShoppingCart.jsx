@@ -23,7 +23,6 @@ const ShoppingCart = (props) => {
   useEffect(() => {
     const cart = JSON.parse(sessionStorage.getItem("itemsInCart"));
     updateCartTotal(cart);
-    console.log(products);
   }, []);
 
   const updateCartTotal = (arr) => {
@@ -60,7 +59,6 @@ const ShoppingCart = (props) => {
       setNumInCart(numInCart - (oldQuantity - newQuantity));
     }
     updateCartTotal(itemsInCart);
-    console.log(products);
   };
 
   const removeFromCart = (e, idx) => {
@@ -76,7 +74,6 @@ const ShoppingCart = (props) => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(products);
   };
 
   return (

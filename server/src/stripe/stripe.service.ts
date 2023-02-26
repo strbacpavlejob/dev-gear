@@ -21,7 +21,6 @@ export class StripeService {
   }
 
   async listAllProducts() {
-    console.log(process.env.STRIPE_SECRET_KEY);
     const product = await this.stripe.products.list({
       limit: 100,
     });
@@ -55,10 +54,9 @@ export class StripeService {
 
   calculateOrderAmount(items) {
     let subtotal = 0;
-    const tax = 1.05;
-    const shipping = 500;
+    const tax = 1.3;
+    const shipping = 15;
     for (const i in items) {
-      console.log(items[i].unit_amount);
       subtotal += items[i].unit_amount;
     }
     const total = subtotal * tax + shipping;

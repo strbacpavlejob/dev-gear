@@ -24,8 +24,6 @@ const ProductList = (props) => {
     // e.preventDefault();
     quickViewIdx[i] = !quickViewIdx[i];
     setQuickViewIdx([...quickViewIdx]);
-    console.log("is it working?");
-    console.log(quickViewIdx);
   };
 
   return (

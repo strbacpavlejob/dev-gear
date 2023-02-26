@@ -39,8 +39,8 @@ export class ProductService {
   async create(createProductDto: CreateProductDto, userId: string) {
     //admin
     Logger.verbose(`Creates one product: ${createProductDto.name}`);
-    if (!this.userService.isAdmin(userId))
-      throwError(UserErrors.USER_HAS_NO_PERMISION);
+    // if (!(await this.userService.isAdmin(userId)))
+    //   throwError(UserErrors.USER_HAS_NO_PERMISION);
     const product = await this.productModel.create(createProductDto);
     return this.formatProductData(product);
   }
@@ -67,8 +67,8 @@ export class ProductService {
   async update(id: string, userId: string, updateProductDto: UpdateProductDto) {
     //admin
     Logger.verbose(`This action updates a #${id} product`);
-    if (!this.userService.isAdmin(userId))
-      throwError(UserErrors.USER_HAS_NO_PERMISION);
+    // if (!(await this.userService.isAdmin(userId)))
+    //   throwError(UserErrors.USER_HAS_NO_PERMISION);
 
     const updatedProduct = await this.productModel.findByIdAndUpdate(
       id,
@@ -82,8 +82,8 @@ export class ProductService {
 
   async remove(id: string, userId: string) {
     Logger.verbose(`This action removes a #${id} product`);
-    if (!this.userService.isAdmin(userId))
-      throwError(UserErrors.USER_HAS_NO_PERMISION);
+    // if (!(await this.userService.isAdmin(userId)))
+    //   throwError(UserErrors.USER_HAS_NO_PERMISION);
     const deltedProduct = await this.productModel.findByIdAndRemove(id);
     return this.formatProductData(deltedProduct);
   }

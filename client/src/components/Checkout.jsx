@@ -26,6 +26,8 @@ const Checkout = (props) => {
   const [residentState, setResidentState] = useState("");
   const [zipCode, setZipCode] = useState("");
 
+  const shipping = 15;
+
   const paymentElementOptions = { layout: "tabs" };
 
   useEffect(() => {
@@ -63,10 +65,10 @@ const Checkout = (props) => {
     }
     setSubtotal(sum.toFixed(2));
 
-    const taxEstimate = sum * 0.05;
+    const taxEstimate = sum * 0.3;
     setTaxes(taxEstimate.toFixed(2));
 
-    const tempTotal = sum + taxEstimate + 5;
+    const tempTotal = sum + taxEstimate + shipping;
     setTotal(tempTotal.toFixed(2));
   };
 
@@ -99,7 +101,6 @@ const Checkout = (props) => {
         receipt_email: email,
       },
     });
-    console.log(email);
 
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);
@@ -176,7 +177,7 @@ const Checkout = (props) => {
 
               <div className="flex items-center justify-between">
                 <dt>Shipping</dt>
-                <dd>$5.00</dd>
+                <dd>${shipping}.00</dd>
               </div>
 
               <div className="flex items-center justify-between">

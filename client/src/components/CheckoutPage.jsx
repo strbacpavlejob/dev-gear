@@ -27,7 +27,6 @@ const CheckoutPage = (props) => {
           listOfProductsByName,
           allStripeProducts
         );
-        console.log(listOfStripeProducts);
         setStripeProducts(listOfStripeProducts);
 
         axios
@@ -39,24 +38,22 @@ const CheckoutPage = (props) => {
               allStripePrices
             );
             axios
-              .post("http://localhost:8000/stripes/create-payment-intent", {
+              .post("http://localhost:8000/stripes/pay", {
                 listOfDBPrices,
               })
               .then((res) => {
                 setClientSecret(res.data.clientSecret);
-                console.log(res.data.clientSecret);
               })
               .catch((err) => console.error(err));
           })
           .catch((err) => console.error(err));
 
         axios
-          .post("http://localhost:8000/create-payment-intent", {
+          .post("http://localhost:8000/pay", {
             stripeProducts,
           })
           .then((res) => {
             setClientSecret(res.data.clientSecret);
-            console.log(res.data.clientSecret);
           })
           .catch((err) => console.error(err));
       })
@@ -87,7 +84,6 @@ const CheckoutPage = (props) => {
         }
       }
     }
-    console.log(containerArr);
     return containerArr;
   };
 
