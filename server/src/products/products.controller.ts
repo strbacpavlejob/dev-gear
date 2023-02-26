@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ProductService } from './product.service';
+import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -16,14 +16,14 @@ import { JwtAuthGuard } from 'src/utils/guards/jwt-guard.guard';
 import { GetCurrentUserById } from 'src/utils';
 import { FilterProductsDto } from './dto/filter-products.dto';
 
-@ApiTags('Product')
-@Controller('product')
-export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+@ApiTags('Products')
+@Controller('products')
+export class ProductsController {
+  constructor(private readonly productsService: ProductsService) {}
 
   @Post('filter')
   filter(@Body() filterProductsDto: FilterProductsDto) {
-    return this.productService.filterProducts(filterProductsDto);
+    return this.productsService.filterProducts(filterProductsDto);
   }
 
   @ApiBearerAuth()
@@ -33,17 +33,17 @@ export class ProductController {
     @Body() createProductDto: CreateProductDto,
     @GetCurrentUserById() userId: string,
   ) {
-    return this.productService.create(createProductDto, userId);
+    return this.productsService.create(createProductDto, userId);
   }
 
   @Get()
   findAll() {
-    return this.productService.findAll();
+    return this.productsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productService.findOne(id);
+    return this.productsService.findOne(id);
   }
 
   @ApiBearerAuth()
@@ -54,13 +54,13 @@ export class ProductController {
     @GetCurrentUserById() userId: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productService.update(id, userId, updateProductDto);
+    return this.productsService.update(id, userId, updateProductDto);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @GetCurrentUserById() userId: string) {
-    return this.productService.remove(id, userId);
+    return this.productsService.remove(id, userId);
   }
 }

@@ -112,7 +112,7 @@ const ShoppingCart = (props) => {
                         <div className="flex justify-between">
                           <h3 className="text-sm">
                             <a
-                              href={"/product/" + product.id}
+                              href={"/products/" + product.id}
                               className="font-medium text-gray-700 hover:text-gray-800"
                             >
                               {product.name}

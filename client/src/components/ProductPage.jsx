@@ -23,7 +23,7 @@ const ProductPage = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/product/" + id)
+      .get("http://localhost:8000/products/" + id)
       .then((res) => {
         setItem({ ...res.data, quantity: 1, plug: res.data.plug[0] });
         setPlugs([...res.data.plug]);

@@ -131,10 +131,10 @@ const AdminForm = (props) => {
           .then((res) => console.log(res))
           .catch((err) => console.error(err));
         axios
-          .get(`http://localhost:8000/db/product/${dbName}`)
+          .get(`http://localhost:8000/db/products/${dbName}`)
           .then((res) => {
             axios
-              .put("http://localhost:8000/api/product/" + res.data._id, {
+              .put("http://localhost:8000/products/" + res.data._id, {
                 price: mongoPrice,
               })
               .then((res) => {
@@ -153,10 +153,10 @@ const AdminForm = (props) => {
       .put("http://localhost:8000/stripes/archives/" + pricedStripeProduct)
       .then((res) => {
         axios
-          .get(`http://localhost:8000/db/product/${pricedDBName}`)
+          .get(`http://localhost:8000/db/products/${pricedDBName}`)
           .then((res) => {
             axios
-              .delete("http://localhost:8000/api/product/" + res.data._id)
+              .delete("http://localhost:8000/products/" + res.data._id)
               .then((res) => console.log(res))
               .catch((err) => console.log(err));
           })

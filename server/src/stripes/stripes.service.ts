@@ -7,7 +7,7 @@ import { CreateStripePriceDto } from './dto/create-stripe-price.dto';
 import { CreateStripePaymentDto } from './dto/create-stripe-payment.dto';
 
 @Injectable()
-export class StripeService {
+export class StripesService {
   readonly stripe: Stripe;
   constructor(readonly configService: ConfigService) {
     this.stripe = new Stripe(configService.get<string>('STRIPE_SECRET_KEY'), {

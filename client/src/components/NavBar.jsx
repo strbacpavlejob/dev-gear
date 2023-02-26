@@ -9,7 +9,6 @@ import {
 import { Link } from "react-router-dom";
 import ProductContext from "../context/ProductContext";
 import SlidingCart from "./SlidingCart";
-import axios from "axios";
 
 const navigation = {
   categories: [
@@ -19,7 +18,7 @@ const navigation = {
       featured: [
         {
           name: "Trending",
-          href: "/product/view-trending",
+          href: "/products/view-trending",
           imageSrc:
             "https://img.gigatron.rs/img/products/large/image63e10e2e0de22.jpg",
           imageAlt: "",
@@ -27,7 +26,7 @@ const navigation = {
         },
         {
           name: "New Arrivals",
-          href: "/product/new-arrivals",
+          href: "/products/new-arrivals",
           imageSrc:
             "https://img.gigatron.rs/img/products/large/image62679d32b86a2.jpg",
           imageAlt: "",
@@ -39,7 +38,7 @@ const navigation = {
           id: "products",
           name: "Products",
           items: [
-            { name: "All Products", href: "/product/view-all" },
+            { name: "All Products", href: "/products/view-all" },
             { name: "Laptops", href: "#" },
             { name: "Smartphones", href: "#" },
             { name: "Tablets", href: "#" },
@@ -201,12 +200,21 @@ const NavBar = (props) => {
   const [loaded, setLoaded] = useState(false);
 
   const [userSession, setUserSession] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const numInCart = useContext(ProductContext).numInCart;
 
   const openCart = (slide) => {
     setLoaded(slide);
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isAdmin") === "null") {
+      setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
+    } else {
+      setIsAdmin(sessionStorage.getItem("userInSession"));
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     if (sessionStorage.getItem("userInSession") === "null") {
@@ -220,6 +228,8 @@ const NavBar = (props) => {
     e.preventDefault();
     sessionStorage.setItem("userInSession", null);
     sessionStorage.setItem("sessionToken", null);
+    sessionStorage.setItem("isAdmin", null);
+    setIsAdmin(false);
     window.location.reload();
   };
 
@@ -355,6 +365,16 @@ const NavBar = (props) => {
                   </Tab.Panels>
                 </Tab.Group>
                 <div className="space-y-6 border-t border-gray-200 py-6 px-4">
+                  {isAdmin && (
+                    <div className="flow-root">
+                      <a
+                        href="/admin"
+                        className="-m-2 block p-2 font-medium text-gray-900"
+                      >
+                        Admin Dashboard
+                      </a>
+                    </div>
+                  )}
                   <div className="flow-root">
                     <a
                       href="#"
@@ -519,6 +539,16 @@ const NavBar = (props) => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 ">
+                  {isAdmin && (
+                    <div className="flow-root">
+                      <a
+                        href="/admin"
+                        className="text-sm font-medium hover:text-blue"
+                      >
+                        Admin Dashboard
+                      </a>
+                    </div>
+                  )}
                   {userSession ? (
                     <>
                       <button

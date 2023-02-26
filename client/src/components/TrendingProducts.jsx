@@ -11,7 +11,7 @@ const TrendingProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/product")
+      .post("http://localhost:8000/products/filter", { limit: 4 })
       .then((res) => {
         const allProducts = res.data;
         setProducts(allProducts.slice(0, 4));
@@ -21,7 +21,7 @@ const TrendingProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/product")
+      .post("http://localhost:8000/products/filter", { limit: 4 })
       .then((res) => {
         const hoverArr = [];
         const allProducts = res.data.products;
@@ -80,7 +80,10 @@ const TrendingProduct = (props) => {
                 onMouseOut={() => hover(i)}
                 className="relative"
               >
-                <Link to={"/product/" + product._id} className="group relative">
+                <Link
+                  to={"/products/" + product._id}
+                  className="group relative"
+                >
                   <div className="h-56 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-72 xl:h-80">
                     <img
                       src={product.imgUrls[0]}
@@ -100,7 +103,7 @@ const TrendingProduct = (props) => {
                   ""
                 )}
               </div>
-              <Link to={"/product/" + product._id}>
+              <Link to={"/products/" + product._id}>
                 <h3 className="mt-4 text-sm font-medium text-gray-700">
                   {product.name}
                 </h3>

@@ -9,7 +9,7 @@ import { throwError } from 'src/common/error/domain';
 import { UserErrors } from 'src/common/error/user.errors';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async formatUserData(user: User & { _id: Types.ObjectId }) {

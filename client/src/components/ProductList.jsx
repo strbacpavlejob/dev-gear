@@ -38,7 +38,7 @@ const ProductList = (props) => {
                   onMouseOut={() => hover(i)}
                   className="relative"
                 >
-                  <Link to={"/product/" + product._id} className="group">
+                  <Link to={"/products/" + product._id} className="group">
                     <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 ">
                       <img
                         src={product.imgUrls[0]}
@@ -58,7 +58,7 @@ const ProductList = (props) => {
                     ""
                   )}
                 </div>
-                <Link to={"/product/" + product._id}>
+                <Link to={"/products/" + product._id}>
                   <h3 className="mt-4 font-medium text-gray-900">
                     {product.name}
                   </h3>

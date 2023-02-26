@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { ProductModule } from './product/product.module';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
 import mongodbConfig from './shared/config/mongodb.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
-import { StripeModule } from './stripe/stripe.module';
+import { StripesModule } from './stripes/stripes.module';
 
 @Module({
   imports: [
@@ -25,9 +25,9 @@ import { StripeModule } from './stripe/stripe.module';
     //   inject: [ConfigService],
     // }),
     AuthModule,
-    UserModule,
-    ProductModule,
-    StripeModule,
+    UsersModule,
+    ProductsModule,
+    StripesModule,
   ],
   controllers: [],
   providers: [],

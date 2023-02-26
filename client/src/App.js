@@ -15,6 +15,15 @@ function App() {
   const [itemsInCart, setItemsInCart] = useState([]);
   const [numInCart, setNumInCart] = useState(0);
   const [shippingInfo, setShippingInfo] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isAdmin") === "null") {
+      setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
+    } else {
+      setIsAdmin(sessionStorage.getItem("userInSession"));
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     const updateNumInCart = JSON.parse(sessionStorage.getItem("numInCart"));
@@ -40,12 +49,12 @@ function App() {
           <Route element={<Home />} path="/" />
           <Route element={<LoginPage />} path="/user/login" />
           <Route element={<RegisterPage />} path="/register" />
-          <Route element={<ViewAllProducts />} path="/product/view-all" />
-          <Route element={<ViewProduct />} path="/product/:id" />
+          <Route element={<ViewAllProducts />} path="/products/view-all" />
+          <Route element={<ViewProduct />} path="/products/:id" />
           <Route element={<ShoppingCartPage />} path="/cart" />
           <Route element={<CheckoutPage />} path="/checkout" />
           <Route element={<OrderSummary />} path="/summary" />
-          <Route element={<AdminPage />} path="/admin" />
+          {isAdmin && <Route element={<AdminPage />} path="/admin" />}
         </Routes>
       </ProductContext.Provider>
     </div>

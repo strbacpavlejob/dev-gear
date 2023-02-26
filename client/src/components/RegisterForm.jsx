@@ -17,7 +17,7 @@ const RegisterForm = (props) => {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:8000/user",
+        "http://localhost:8000/users",
         {
           username: userName,
           email,

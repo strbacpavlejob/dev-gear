@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { StripeService } from './stripe.service';
+import { StripesService } from './stripes.service';
 import { CreateStripeProductDto } from './dto/create-stripe-product.dto';
 import { UpdateStripeProductDto } from './dto/update-stripe-product.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -16,22 +16,22 @@ import { CreateStripePriceDto } from './dto/create-stripe-price.dto';
 
 @ApiTags('Stripes')
 @Controller('stripes')
-export class StripeController {
-  constructor(private readonly stripeService: StripeService) {}
+export class StripesController {
+  constructor(private readonly stripesService: StripesService) {}
 
   @Post('products')
   createStripeProduct(@Body() createStripeProductDto: CreateStripeProductDto) {
-    return this.stripeService.createStripeProduct(createStripeProductDto);
+    return this.stripesService.createStripeProduct(createStripeProductDto);
   }
 
   @Get('products')
   listAllProducts() {
-    return this.stripeService.listAllProducts();
+    return this.stripesService.listAllProducts();
   }
 
   @Get('products/:id')
   getOneProduct(@Param('id') id: string) {
-    return this.stripeService.getOneProduct(id);
+    return this.stripesService.getOneProduct(id);
   }
 
   @Patch('products/:id')
@@ -39,36 +39,36 @@ export class StripeController {
     @Param('id') id: string,
     @Body() updateStripeDto: UpdateStripeProductDto,
   ) {
-    return this.stripeService.updateStripeProduct(id, updateStripeDto);
+    return this.stripesService.updateStripeProduct(id, updateStripeDto);
   }
 
   @Delete('products/:id')
   deleteOneProduct(@Param('id') id: string) {
-    return this.stripeService.deleteOneProduct(id);
+    return this.stripesService.deleteOneProduct(id);
   }
 
   @Patch('archives/:id')
   archive(@Param('id') id: string) {
-    return this.stripeService.archiveStripeProduct(id);
+    return this.stripesService.archiveStripeProduct(id);
   }
 
   @Post('pay')
   createPaymentIntent(@Body() createStripePaymentDto: CreateStripePaymentDto) {
-    return this.stripeService.createPaymentIntent(createStripePaymentDto);
+    return this.stripesService.createPaymentIntent(createStripePaymentDto);
   }
 
   @Post('prices')
   createPrice(@Body() createStripePriceDto: CreateStripePriceDto) {
-    return this.stripeService.createPriceObject(createStripePriceDto);
+    return this.stripesService.createPriceObject(createStripePriceDto);
   }
 
   @Get('prices')
   findAllPrices() {
-    return this.stripeService.getAllPrices();
+    return this.stripesService.getAllPrices();
   }
 
   @Get('prices/:id')
   findOnePrice(@Param('id') id: string) {
-    return this.stripeService.getOnePrice(id);
+    return this.stripesService.getOnePrice(id);
   }
 }

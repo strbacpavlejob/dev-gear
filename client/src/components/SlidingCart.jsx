@@ -110,7 +110,7 @@ const SlidingCart = (props) => {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={`/product/${product._id}`}>
+                                        <a href={`/products/${product._id}`}>
                                           {product.name}
                                         </a>
                                       </h3>

@@ -37,7 +37,7 @@ const SideBar = (props) => {
   useEffect(() => {
     setLoaded(false);
     axios
-      .post("http://localhost:8000/product/filter", filterQuery)
+      .post("http://localhost:8000/products/filter", filterQuery)
       .then((res) => {
         setAllProducts(res.data);
         setLoaded(true);
@@ -49,7 +49,7 @@ const SideBar = (props) => {
     setLoaded(false);
     normalizeQuery();
     axios
-      .post("http://localhost:8000/product/filter", filterQuery)
+      .post("http://localhost:8000/products/filter", filterQuery)
       .then((res) => {
         setAllProducts(res.data);
         setLoaded(true);
