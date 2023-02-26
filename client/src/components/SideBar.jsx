@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -9,56 +9,7 @@ import {
 } from "@heroicons/react/20/solid";
 import ProductList from "./ProductList";
 import React, { useEffect } from "react";
-import axios, { all } from "axios";
-
-const subCategories = [{ name: "Reset filters", href: "/product/view-all" }];
-const productTypes = [
-  { name: "Laptops", href: "#" },
-  { name: "Smartphones", href: "#" },
-  { name: "Tablets", href: "#" },
-];
-
-const colors = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "White", label: "White", checked: false },
-      { value: "Black", label: "Black", checked: false },
-      { value: "Blue", label: "Blue", checked: false },
-      { value: "Red", label: "Red", checked: false },
-      { value: "Green", label: "Green", checked: false },
-      { value: "Purple", label: "Purple", checked: false },
-    ],
-  },
-];
-const categories = [
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "Work", label: "Work", checked: false },
-      { value: "Gaming", label: "Gaming", checked: false },
-      { value: "Everyday", label: "Everyday", checked: false },
-    ],
-  },
-];
-
-const plugs = [
-  {
-    id: "plug",
-    name: "Plug",
-    options: [
-      { value: "EU", label: "EU", checked: false },
-      { value: "UK", label: "UK", checked: false },
-      { value: "US", label: "US", checked: false },
-    ],
-  },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import axios from "axios";
 
 const SideBar = (props) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -66,9 +17,77 @@ const SideBar = (props) => {
   const [allProducts, setAllProducts] = useState([]);
   const [loaded, setLoaded] = useState("");
 
+  const [filterQuery, setFilterQuery] = useState({
+    sort: "name",
+    order: "asc",
+  });
+  const [sort, setSort] = useState("name");
+  const [order, setOrder] = useState("asc");
+
+  const filterItems = [
+    {
+      id: "itemTypes",
+      name: "Product Type",
+      options: [
+        { value: "Laptop", label: "Laptop", checked: false },
+        { value: "Smartphone", label: "Smartphone", checked: false },
+        { value: "Tablet", label: "Tablet", checked: false },
+      ],
+    },
+    {
+      id: "brands",
+      name: "Brand",
+      options: [
+        { value: "Lenovo", label: "Lenovo", checked: false },
+        { value: "Apple", label: "Apple", checked: false },
+        { value: "Samsung", label: "Samsung", checked: false },
+      ],
+    },
+    {
+      id: "categories",
+      name: "Category",
+      options: [
+        { value: "Work", label: "Work", checked: false },
+        { value: "Gaming", label: "Gaming", checked: false },
+        { value: "Everyday", label: "Everyday", checked: false },
+      ],
+    },
+    {
+      id: "plugs",
+      name: "Plug",
+      options: [
+        { value: "EU", label: "EU", checked: false },
+        { value: "UK", label: "UK", checked: false },
+        { value: "US", label: "US", checked: false },
+      ],
+    },
+    {
+      id: "colors",
+      name: "Color",
+      options: [
+        { value: "White", label: "White", checked: false },
+        { value: "Black", label: "Black", checked: false },
+        { value: "Blue", label: "Blue", checked: false },
+        { value: "Red", label: "Red", checked: false },
+        { value: "Green", label: "Green", checked: false },
+        { value: "Purple", label: "Purple", checked: false },
+      ],
+    },
+  ];
+
+  const normalizeQuery = () => {
+    const tempFilterQuery = filterQuery;
+    for (const key in tempFilterQuery) {
+      if (Array.isArray(tempFilterQuery[key]) && !tempFilterQuery[key].length)
+        delete tempFilterQuery[key];
+    }
+    setFilterQuery(tempFilterQuery);
+  };
+
   useEffect(() => {
+    setLoaded(false);
     axios
-      .get("http://localhost:8000/product")
+      .post("http://localhost:8000/product/filter", filterQuery)
       .then((res) => {
         setAllProducts(res.data);
         setLoaded(true);
@@ -76,101 +95,109 @@ const SideBar = (props) => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleColor = (e, index) => {
+  const handleApplyFilters = () => {
+    setLoaded(false);
+    normalizeQuery();
+    console.log(filterQuery);
     axios
-      .get("http://localhost:8000/product")
+      .post("http://localhost:8000/product/filter", filterQuery)
       .then((res) => {
-        const products = res.data.products;
-
-        if (colors[0].options[index].value === e.target.value) {
-          colors[0].options[index].checked = !colors[0].options[index].checked;
-        } else if (categories[0].options[index].value === e.target.value) {
-          categories[0].options[index].checked =
-            !categories[0].options[index].checked;
-        }
-
-        let filterByColor = colorFilter(products);
-        let filterByCat = categoryFilter(filterByColor);
-
-        filterByCat.length < 1
-          ? setAllProducts(products)
-          : setAllProducts(filterByCat);
+        console.log(`Data filtred ${JSON.stringify(res.data)}`);
+        setAllProducts(res.data);
+        setLoaded(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.log(err));
   };
 
-  const colorFilter = (arr) => {
-    let trueColors = [];
-    let anotherArr = [];
-    for (let i = 0; i < colors[0].options.length; i++) {
-      let checkedColor = colors[0].options[i];
-      if (checkedColor.checked) {
-        trueColors.push(checkedColor.value);
-      }
-    }
-
-    if (trueColors.length < 1) {
-      return arr;
-    }
-
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < trueColors.length; j++) {
-        if (arr[i].colors.includes(trueColors[j])) {
-          anotherArr.push(arr[i]);
-        }
-      }
-    }
-    return anotherArr;
+  const generateFilterSection = (section, onChangeFilter) => {
+    return (
+      <>
+        <Disclosure
+          as="div"
+          key={section.id}
+          className="border-b border-gray-200 py-6"
+        >
+          {({ open }) => (
+            <>
+              <h3 className="-my-3 flow-root">
+                <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                  <span className="font-medium text-gray-900">
+                    {section.name}
+                  </span>
+                  <span className="ml-6 flex items-center">
+                    {open ? (
+                      <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                    )}
+                  </span>
+                </Disclosure.Button>
+              </h3>
+              <Disclosure.Panel className="pt-6">
+                <div className="space-y-4">
+                  {section.options.map((option, optionIdx) => (
+                    <div key={option.value} className="flex items-center">
+                      <input
+                        id={`filter-${section.id}-${optionIdx}`}
+                        name={`${section.id}[]`}
+                        defaultValue={option.value}
+                        type="checkbox"
+                        defaultChecked={option.checked}
+                        className="h-4 w-4 rounded border-gray-300 text-dark-blue focus:ring-blue"
+                        onClick={(e) => onChangeFilter(e, section.id)}
+                      />
+                      <label
+                        htmlFor={`filter-${section.id}-${optionIdx}`}
+                        className="ml-3 text-sm text-gray-600"
+                      >
+                        {option.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      </>
+    );
   };
 
-  const categoryFilter = (arr) => {
-    let trueCategories = [];
-    const finalObj = {};
-
-    for (let i = 0; i < categories[0].options.length; i++) {
-      let checkedCats = categories[0].options[i];
-      if (checkedCats.checked) {
-        trueCategories.push(checkedCats.value);
+  const handleChangeFilter = useCallback(
+    (e, filterName) => {
+      if (e.target.checked) {
+        setFilterQuery((oldValue) => {
+          return {
+            ...oldValue,
+            [filterName]: [...new Set(oldValue[filterName]), e.target.value],
+          };
+        });
+      } else {
+        setFilterQuery((oldValue) => {
+          return {
+            ...oldValue,
+            [filterName]: [...new Set(oldValue[filterName])].filter(
+              (item) => item !== e.target.value
+            ),
+          };
+        });
       }
-    }
+    },
+    [filterQuery]
+  );
 
-    if (trueCategories.length < 1) {
-      return arr;
-    }
-
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < trueCategories.length; j++) {
-        if (finalObj[i]) continue;
-        if (arr[i].categories.includes(trueCategories[j])) {
-          finalObj[i] = arr[i];
-        }
-      }
-    }
-    return Object.values(finalObj);
-  };
-
-  const handleName = (arr) => {
-    arr.sort((a, b) => {
-      let strA = a.name.toLowerCase();
-      let strB = b.name.toLowerCase();
-      if (strA < strB) {
-        return -1;
-      } else if (strA > strB) {
-        return 1;
-      }
-      return 0;
-    });
-    setAllProducts([...arr]);
-  };
-
-  const handlePrice = (e, arr) => {
-    if (e.target.id === "low") {
-      arr.sort((a, b) => a.price - b.price);
-    } else {
-      arr.sort((a, b) => b.price - a.price);
-    }
-    setAllProducts([...arr]);
-  };
+  const handleSort = useCallback(
+    (sortBy, orderBy) => {
+      setSort(sortBy);
+      setOrder(orderBy);
+      setFilterQuery({
+        ...filterQuery,
+        sort,
+        order,
+      });
+    },
+    [sort, order]
+  );
 
   return (
     <div className="bg-white">
@@ -219,139 +246,20 @@ const SideBar = (props) => {
                     </button>
                   </div>
 
-                  {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
+                  {/* Filters  mobile*/}
+                  <form className="m-4 border-t border-gray-200">
                     <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="px-2 py-3 font-medium text-gray-900"
+                    <div
+                      className=" m-4 flex items-center justify-center rounded-md border border-transparent bg-dark-blue px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-light-blue"
+                      onClick={() => handleApplyFilters()}
                     >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {colors.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-mx-2 -my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-4">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      id={`filter-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-dark-blue focus:ring-blue"
-                                      onClick={(e) => handleColor(e, optionIdx)}
-                                    />
-                                    <label
-                                      htmlFor={`filter-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    ))}
-
-                    {categories.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-mx-2 -my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-4">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      id={`filter-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-dark-blue focus:ring-blue"
-                                      onClick={(e) => handleColor(e, optionIdx)}
-                                    />
-                                    <label
-                                      htmlFor={`filter-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    ))}
+                      Apply Filters
+                    </div>
+                    <>
+                      {filterItems.map((item) => {
+                        return generateFilterSection(item, handleChangeFilter);
+                      })}
+                    </>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -390,15 +298,23 @@ const SideBar = (props) => {
                     <div className="py-1">
                       <Menu.Item>
                         <p
-                          onClick={() => handleName(allProducts)}
+                          onClick={(e) => handleSort("name", "asc")}
                           className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                         >
-                          Alphabetically A-Z
+                          Name: A to Z
+                        </p>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <p
+                          onClick={(e) => handleSort("name", "dsc")}
+                          className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
+                        >
+                          Name: Z to A
                         </p>
                       </Menu.Item>
                       <Menu.Item id="low">
                         <p
-                          onClick={(e) => handlePrice(e, allProducts)}
+                          onClick={(e) => handleSort("price", "asc")}
                           id="low"
                           className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                         >
@@ -407,7 +323,7 @@ const SideBar = (props) => {
                       </Menu.Item>
                       <Menu.Item id="high">
                         <p
-                          onClick={(e) => handlePrice(e, allProducts)}
+                          onClick={(e) => handleSort("price", "dsc")}
                           id="high"
                           className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                         >
@@ -436,148 +352,27 @@ const SideBar = (props) => {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              {/* Filters */}
+              {/* Filters  LG */}
               <div>
                 <form className="hidden lg:block sticky top-0">
                   <h3 className="sr-only">Categories</h3>
-                  <ul
-                    role="list"
-                    className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
+                  <div
+                    className=" mb-10 flex items-center justify-center rounded-md border border-transparent bg-dark-blue px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-light-blue"
+                    onClick={() => handleApplyFilters()}
                   >
-                    {subCategories.map((category) => (
-                      <li key={category.name}>
-                        <a href={category.href}>{category.name}</a>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {colors.map((section) => (
-                    <Disclosure
-                      as="div"
-                      key={section.id}
-                      className="border-b border-gray-200 py-6"
-                    >
-                      {({ open }) => (
-                        <>
-                          <h3 className="-my-3 flow-root">
-                            <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                              <span className="font-medium text-gray-900">
-                                {section.name}
-                              </span>
-                              <span className="ml-6 flex items-center">
-                                {open ? (
-                                  <MinusIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <PlusIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-                          </h3>
-                          <Disclosure.Panel className="pt-6">
-                            <div className="space-y-4">
-                              {section.options.map((option, optionIdx) => (
-                                <div
-                                  key={option.value}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={`filter-${section.id}-${optionIdx}`}
-                                    name={`${section.id}[]`}
-                                    defaultValue={option.value}
-                                    type="checkbox"
-                                    defaultChecked={option.checked}
-                                    className="h-4 w-4 rounded border-gray-300 text-dark-blue focus:ring-blue"
-                                    onClick={(e) => handleColor(e, optionIdx)}
-                                  />
-                                  <label
-                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                    className="ml-3 text-sm text-gray-600"
-                                  >
-                                    {option.label}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Disclosure.Panel>
-                        </>
-                      )}
-                    </Disclosure>
-                  ))}
-
-                  {categories.map((section) => (
-                    <Disclosure
-                      as="div"
-                      key={section.id}
-                      className="border-b border-gray-200 py-6"
-                    >
-                      {({ open }) => (
-                        <>
-                          <h3 className="-my-3 flow-root">
-                            <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                              <span className="font-medium text-gray-900">
-                                {section.name}
-                              </span>
-                              <span className="ml-6 flex items-center">
-                                {open ? (
-                                  <MinusIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <PlusIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-                          </h3>
-                          <Disclosure.Panel className="pt-6">
-                            <div className="space-y-4">
-                              {section.options.map((option, optionIdx) => (
-                                <div
-                                  key={option.value}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={`filter-${section.id}-${optionIdx}`}
-                                    name={`${section.id}[]`}
-                                    defaultValue={option.value}
-                                    type="checkbox"
-                                    defaultChecked={option.checked}
-                                    className="h-4 w-4 rounded border-gray-300 text-dark-blue focus:ring-blue"
-                                    onClick={(e) => handleColor(e, optionIdx)}
-                                  />
-                                  <label
-                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                    className="ml-3 text-sm text-gray-600"
-                                  >
-                                    {option.label}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </Disclosure.Panel>
-                        </>
-                      )}
-                    </Disclosure>
-                  ))}
+                    Apply Filters
+                  </div>
+                  <>
+                    {filterItems.map((item) => {
+                      return generateFilterSection(item, handleChangeFilter);
+                    })}
+                  </>
                 </form>
               </div>
 
               {/* Product grid */}
               <div className="lg:col-span-3 lg:pb-48  ">
-                {/* Replace with your content */}
-                {/* <div className="h-96 rounded-lg border-4 border-dashed border-gray-200 lg:h-full" /> */}
-                {/* need to put product stuff in here */}
                 {loaded && <ProductList allProducts={allProducts} />}
-                {/* /End replace */}
               </div>
             </div>
           </section>
