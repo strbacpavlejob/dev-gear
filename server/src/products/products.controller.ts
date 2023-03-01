@@ -20,6 +20,10 @@ import { FilterProductsDto } from './dto/filter-products.dto';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
+  @Get('name/:id')
+  findOneByName(@Param('id') id: string) {
+    return this.productsService.findOneByName(id);
+  }
 
   @Post('filter')
   filter(@Body() filterProductsDto: FilterProductsDto) {

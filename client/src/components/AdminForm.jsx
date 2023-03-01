@@ -119,22 +119,22 @@ const AdminForm = (props) => {
     e.preventDefault();
     axios
       .post("http://localhost:8000/stripes/prices", {
-        stripePrice,
+        stripePrice: parseInt(stripePrice),
         stripeProductId,
       })
       .then((res) => {
         const stripePriceId = res.data.id;
         axios
-          .put("http://localhost:8000/stripes/products/" + stripeProductId, {
+          .patch("http://localhost:8000/stripes/products/" + stripeProductId, {
             default_price: stripePriceId,
           })
           .then((res) => console.log(res))
           .catch((err) => console.error(err));
         axios
-          .get(`http://localhost:8000/db/products/${dbName}`)
+          .get(`http://localhost:8000/products/name/${dbName}`)
           .then((res) => {
             axios
-              .put("http://localhost:8000/products/" + res.data._id, {
+              .patch("http://localhost:8000/products/" + res.data._id, {
                 price: mongoPrice,
               })
               .then((res) => {
@@ -150,10 +150,10 @@ const AdminForm = (props) => {
   const archiveProductHandler = (e) => {
     e.preventDefault();
     axios
-      .put("http://localhost:8000/stripes/archives/" + pricedStripeProduct)
+      .patch("http://localhost:8000/stripes/archives/" + pricedStripeProduct)
       .then((res) => {
         axios
-          .get(`http://localhost:8000/db/products/${pricedDBName}`)
+          .get(`http://localhost:8000/products/name/${pricedDBName}`)
           .then((res) => {
             axios
               .delete("http://localhost:8000/products/" + res.data._id)
@@ -409,7 +409,7 @@ const AdminForm = (props) => {
                   className="w-full border rounded-md p-2"
                   onChange={(e) => {
                     setStripePrice(e.target.value);
-                    setMongoPrice(e.target.value / 100);
+                    setMongoPrice(e.target.value);
                   }}
                   value={stripePrice}
                 />
