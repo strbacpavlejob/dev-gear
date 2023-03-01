@@ -230,7 +230,7 @@ const NavBar = (props) => {
     sessionStorage.setItem("sessionToken", null);
     sessionStorage.setItem("isAdmin", null);
     setIsAdmin(false);
-    window.location.reload();
+    window.location.replace("/");
   };
 
   return (
@@ -365,31 +365,53 @@ const NavBar = (props) => {
                   </Tab.Panels>
                 </Tab.Group>
                 <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                  {isAdmin && (
-                    <div className="flow-root">
-                      <a
-                        href="/admin"
-                        className="-m-2 block p-2 font-medium text-gray-900"
-                      >
-                        Admin Dashboard
-                      </a>
-                    </div>
-                  )}
                   <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
+                    {userSession ? (
+                      <>
+                        <p className="-m-2 block p-2 pb-8 font-medium text-gray-900">
+                          Welcome, {userSession}
+                        </p>
+                        <span
+                          className="h-6 w-px bg-gray-200 "
+                          aria-hidden="true"
+                        />
+                        {isAdmin && (
+                          <div className="flow-root">
+                            <a
+                              href="/admin"
+                              className="-m-2 block p-2 pb-4 font-medium text-gray-900"
+                            >
+                              Admin Dashboard
+                            </a>
+                          </div>
+                        )}
+                        <button
+                          className="-m-2 block p-2 pb-4 font-medium text-gray-900"
+                          onClick={logoutHandler}
+                        >
+                          Sign Out
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/register"
+                          className="-m-2 block p-2 pb-4 font-medium text-gray-900"
+                        >
+                          Create account
+                        </Link>
+                        <span
+                          className="h-6 w-px bg-gray-200 "
+                          aria-hidden="true"
+                        />
+                        <Link
+                          to="/user/login"
+                          className="-m-2 block p-2 pb-4 font-medium text-gray-900"
+                        >
+                          Sign in
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </Dialog.Panel>

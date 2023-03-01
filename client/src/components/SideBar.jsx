@@ -11,14 +11,24 @@ import ProductList from "./ProductList";
 import React, { useEffect } from "react";
 import axios from "axios";
 import { filterItems } from "../common/filterdata";
+import useQuery from "../hooks/useQuery";
 
 const SideBar = (props) => {
+  let query = useQuery();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const [allProducts, setAllProducts] = useState([]);
   const [loaded, setLoaded] = useState("");
 
   const [filterQuery, setFilterQuery] = useState({
+    searchedWords: query.getAll("searchedWords"),
+    itemTypes: query.getAll("itemTypes"),
+    brands: query.getAll("brands"),
+    categories: query.getAll("categories"),
+    plugs: query.getAll("plugs"),
+    colors: query.getAll("colors"),
+    maxPrice: query.get("maxPrice"),
+    minPrice: query.get("minPrice"),
     sort: "name",
     order: "asc",
   });
@@ -28,13 +38,18 @@ const SideBar = (props) => {
   const normalizeQuery = () => {
     const tempFilterQuery = filterQuery;
     for (const key in tempFilterQuery) {
-      if (Array.isArray(tempFilterQuery[key]) && !tempFilterQuery[key].length)
+      if (
+        (Array.isArray(tempFilterQuery[key]) && !tempFilterQuery[key].length) ||
+        tempFilterQuery[key] === null
+      )
         delete tempFilterQuery[key];
     }
     setFilterQuery(tempFilterQuery);
   };
 
   useEffect(() => {
+    normalizeQuery();
+
     setLoaded(false);
     axios
       .post("http://localhost:8000/products/filter", filterQuery)
