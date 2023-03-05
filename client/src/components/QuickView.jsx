@@ -130,10 +130,21 @@ const QuickView = (props) => {
                       />
                     </div>
                     <div className="sm:col-span-8 lg:col-span-7">
-                      <p className=" text-blue">{product.brand}</p>
-                      <h2 className="text-xl font-medium text-gray-900 sm:pr-12">
-                        {product.name}
-                      </h2>
+                      <p className="text-blue tracking-tight">
+                        {product.itemType}
+                      </p>
+                      <span className="flex flex-row">
+                        {product.brand ? (
+                          <h4 className="text-3xl font-bold tracking-tight text-gray-900 pr-1">
+                            {product.brand}
+                          </h4>
+                        ) : (
+                          <p></p>
+                        )}
+                        <h1 className="text-3xl font-bold tracking-tight text-gray-500 pr-1">
+                          {product.name}
+                        </h1>
+                      </span>
 
                       <section
                         aria-labelledby="information-heading"

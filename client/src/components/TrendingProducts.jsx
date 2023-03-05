@@ -107,9 +107,7 @@ const TrendingProduct = (props) => {
                 <h3 className="mt-4 text-sm font-medium text-gray-700">
                   {product.name}
                 </h3>
-                <p className="mt-1 text-sm text-blue">
-                  {product.categories[0]}
-                </p>
+                <p className="mt-1 text-sm text-blue">{product.itemType}</p>
                 <p className="mt-1 text-md font-medium text-dark-blue">
                   ${product.price}
                 </p>

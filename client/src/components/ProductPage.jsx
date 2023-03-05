@@ -160,7 +160,7 @@ const ProductPage = (props) => {
             </span>
             <div className="mt-3">
               <p className="text-3xl tracking-tight text-gray-900">
-                for {item.categories}
+                for {String(item.categories).toLowerCase()}
               </p>
             </div>
 
