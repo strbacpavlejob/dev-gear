@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import ProductContext from "../context/ProductContext";
 import SlidingCart from "./SlidingCart";
+import SearchBar from "./SearchBar";
 
 const navigation = {
   categories: [
@@ -39,20 +40,23 @@ const navigation = {
           name: "Products",
           items: [
             { name: "All Products", href: "/products/view-all" },
-            { name: "Laptops", href: "#" },
-            { name: "Smartphones", href: "#" },
-            { name: "Tablets", href: "#" },
+            { name: "Laptops", href: "/products/view-all?itemTypes=Laptop" },
+            {
+              name: "Smartphones",
+              href: "/products/view-all?itemTypes=Smartphone",
+            },
+            { name: "Tablets", href: "/products/view-all?itemTypes=Tablet" },
           ],
         },
         {
           id: "brands",
           name: "Brands",
           items: [
-            { name: "Apple", href: "#" },
-            { name: "Lenovo", href: "#" },
-            { name: "Microsoft", href: "#" },
-            { name: "Samsung", href: "#" },
-            { name: "Xiaomi", href: "#" },
+            { name: "Apple", href: "/products/view-all?brands=Apple" },
+            { name: "Lenovo", href: "/products/view-all?brands=Lenovo" },
+            { name: "Microsoft", href: "/products/view-all?brands=Microsoft" },
+            { name: "Samsung", href: "/products/view-all?brands=Samsung" },
+            { name: "Xiaomi", href: "/products/view-all?brands=Xiaomi" },
           ],
         },
       ],
@@ -94,8 +98,18 @@ const navigation = {
           id: "categories",
           name: "Categories",
           items: [
-            { name: "Work", href: "#" },
-            { name: "Gaming", href: "#" },
+            {
+              name: "Everyday",
+              href: "/products/view-all?categories=Everyday&itemTypes=Laptop",
+            },
+            {
+              name: "Work",
+              href: "/products/view-all?categories=Work&itemTypes=Laptop",
+            },
+            {
+              name: "Gaming",
+              href: "/products/view-all?categories=Gaming&itemTypes=Laptop",
+            },
           ],
         },
       ],
@@ -137,8 +151,18 @@ const navigation = {
           id: "categories",
           name: "Categories",
           items: [
-            { name: "Work", href: "#" },
-            { name: "Gaming", href: "#" },
+            {
+              name: "Everyday",
+              href: "/products/view-all?categories=Everyday&itemTypes=Smartphone",
+            },
+            {
+              name: "Work",
+              href: "/products/view-all?categories=Work&itemTypes=Smartphone",
+            },
+            {
+              name: "Gaming",
+              href: "/products/view-all?categories=Gaming&itemTypes=Smartphone",
+            },
           ],
         },
       ],
@@ -180,8 +204,18 @@ const navigation = {
           id: "categories",
           name: "Categories",
           items: [
-            { name: "Work", href: "#" },
-            { name: "Gaming", href: "#" },
+            {
+              name: "Everyday",
+              href: "/products/view-all?categories=Everyday&itemTypes=Tablet",
+            },
+            {
+              name: "Work",
+              href: "/products/view-all?categories=Work&itemTypes=Tablet",
+            },
+            {
+              name: "Gaming",
+              href: "/products/view-all?categories=Gaming&itemTypes=Tablet",
+            },
           ],
         },
       ],
@@ -194,6 +228,7 @@ function classNames(...classes) {
 }
 
 const NavBar = (props) => {
+  const [openSearch, setOpenSearch] = useState(false);
   const [open, setOpen] = useState(false);
   const [slideOpen, setSlideOpen] = useState(true);
 
@@ -231,6 +266,11 @@ const NavBar = (props) => {
     sessionStorage.setItem("isAdmin", null);
     setIsAdmin(false);
     window.location.replace("/");
+  };
+
+  const handleSearchToggle = () => {
+    let tempOpenSeach = openSearch;
+    setOpenSearch(!tempOpenSeach);
   };
 
   return (
@@ -610,14 +650,21 @@ const NavBar = (props) => {
                 </div>
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-500 hover:text-blue">
+                  <div
+                    onClick={() => setOpenSearch(true)}
+                    className="p-2 text-gray-500 hover:text-blue"
+                  >
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon
                       className="h-6 w-6"
                       aria-hidden="true"
                     />
-                  </a>
+                  </div>
                 </div>
+                <SearchBar
+                  openSearch={openSearch}
+                  setOpenSearch={setOpenSearch}
+                />
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
@@ -633,7 +680,6 @@ const NavBar = (props) => {
                       {numInCart}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
-
                     <SlidingCart
                       openCart={openCart}
                       slideOpen={slideOpen}

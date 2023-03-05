@@ -21,7 +21,7 @@ const SideBar = (props) => {
   const [loaded, setLoaded] = useState("");
 
   const [filterQuery, setFilterQuery] = useState({
-    searchedWords: query.getAll("searchedWords"),
+    searchedWords: query.get("searchedWords"),
     itemTypes: query.getAll("itemTypes"),
     brands: query.getAll("brands"),
     categories: query.getAll("categories"),

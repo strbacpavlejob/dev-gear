@@ -49,7 +49,7 @@ const CheckoutPage = (props) => {
           .catch((err) => console.error(err));
 
         axios
-          .post("http://localhost:8000/pay", {
+          .post("http://localhost:8000/stripes/pay", {
             stripeProducts,
           })
           .then((res) => {

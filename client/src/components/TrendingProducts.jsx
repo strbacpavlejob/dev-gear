@@ -59,7 +59,7 @@ const TrendingProduct = (props) => {
           <div className="ml-4 flow-root lg:ml-6">
             <div className="flex flex-1 flex-row justify-center items-center w-20">
               <a
-                href="#"
+                href="/products/view-all"
                 className="hidden mb:invisible flex-1 text-sm font-medium text-blue pr-1 md:block"
               >
                 Show all

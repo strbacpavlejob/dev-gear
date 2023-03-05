@@ -4,6 +4,9 @@ import { Model, Types } from 'mongoose';
 import { throwError } from 'src/common/error/domain';
 import { ProductErrors } from 'src/common/error/product.errors';
 import { UserErrors } from 'src/common/error/user.errors';
+import { CreateStripePriceDto } from 'src/stripes/dto/create-stripe-price.dto';
+import { CreateStripeProductDto } from 'src/stripes/dto/create-stripe-product.dto';
+import { StripesService } from 'src/stripes/stripes.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductsDto } from './dto/filter-products.dto';
@@ -16,6 +19,8 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => StripesService))
+    private readonly stripesService: StripesService,
   ) {}
 
   async formatProductData(product: Product & { _id: Types.ObjectId }) {
@@ -42,6 +47,22 @@ export class ProductsService {
     // if (!(await this.usersService.isAdmin(userId)))
     //   throwError(UserErrors.USER_HAS_NO_PERMISION);
     const product = await this.productModel.create(createProductDto);
+    const createStripeProductDto: CreateStripeProductDto = {
+      name: product.name,
+      description: product.description,
+      images: product.imgUrls.filter((item) => item !== ''),
+    };
+    const stripeProduct = await this.stripesService.createStripeProduct(
+      createStripeProductDto,
+    );
+
+    const stripePrice: CreateStripePriceDto = {
+      stripeProductId: stripeProduct.id,
+      stripePrice: product.price * 100,
+    };
+
+    await this.stripesService.createPriceObject(stripePrice);
+
     return this.formatProductData(product);
   }
 
