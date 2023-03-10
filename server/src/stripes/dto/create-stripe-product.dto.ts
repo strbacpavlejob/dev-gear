@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateStripeProductDto {
   @ApiProperty({ example: 'Iphone' })
@@ -11,7 +11,6 @@ export class CreateStripeProductDto {
   description: string;
 
   @ApiProperty({ example: ['url1', 'url2'] })
-  @IsString()
   @IsArray()
   images: string[];
 }

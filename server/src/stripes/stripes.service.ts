@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateStripeProductDto } from './dto/create-stripe-product.dto';
 import { UpdateStripeProductDto } from './dto/update-stripe-product.dto';
 import { Stripe } from 'stripe';
@@ -16,11 +16,15 @@ export class StripesService {
   }
 
   async createStripeProduct(createStripeProductDto: CreateStripeProductDto) {
+    Logger.verbose(
+      `This action creates one stripe product: ${createStripeProductDto.name}`,
+    );
     const product = await this.stripe.products.create(createStripeProductDto);
     return product;
   }
 
   async listAllProducts() {
+    Logger.verbose(`This action returns 100 stripe products`);
     const product = await this.stripe.products.list({
       limit: 100,
     });
@@ -28,6 +32,7 @@ export class StripesService {
   }
 
   async getOneProduct(id: string) {
+    Logger.verbose(`This action returns one stripe product id:${id}`);
     const product = await this.stripe.products.retrieve(id);
     return product;
   }
@@ -36,16 +41,27 @@ export class StripesService {
     id: string,
     updateStripeDto: UpdateStripeProductDto,
   ) {
+    Logger.verbose(`This action updates one stripe product #${id}`);
     const product = await this.stripe.products.update(id, updateStripeDto);
     return product;
   }
 
+  async setDefaultPrice(id: string, priceId: string) {
+    Logger.verbose(`This action sets default price for stripe product #${id}`);
+    const product = await this.stripe.products.update(id, {
+      default_price: priceId,
+    });
+    return product;
+  }
+
   async deleteOneProduct(id: string) {
+    Logger.verbose(`This action removes a #${id} stripe product`);
     const deletedProduct = await this.stripe.products.del(id);
     return deletedProduct;
   }
 
   async archiveStripeProduct(id: string) {
+    Logger.verbose(`This action archives a #${id} stripe product`);
     const product = await this.stripe.products.update(id, {
       active: false,
     });

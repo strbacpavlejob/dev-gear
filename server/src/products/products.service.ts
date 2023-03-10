@@ -46,6 +46,8 @@ export class ProductsService {
     Logger.verbose(`Creates one product: ${createProductDto.name}`);
     // if (!(await this.usersService.isAdmin(userId)))
     //   throwError(UserErrors.USER_HAS_NO_PERMISION);
+
+    //create product
     const product = await this.productModel.create(createProductDto);
     const createStripeProductDto: CreateStripeProductDto = {
       name: product.name,
@@ -55,13 +57,19 @@ export class ProductsService {
     const stripeProduct = await this.stripesService.createStripeProduct(
       createStripeProductDto,
     );
+    ///create price it was multiplied before with 100
+    //  default_price: product.price,
 
-    const stripePrice: CreateStripePriceDto = {
+    const createStripePriceDto: CreateStripePriceDto = {
       stripeProductId: stripeProduct.id,
       stripePrice: product.price * 100,
     };
 
-    await this.stripesService.createPriceObject(stripePrice);
+    const stripePrice = await this.stripesService.createPriceObject(
+      createStripePriceDto,
+    );
+
+    await this.stripesService.setDefaultPrice(stripeProduct.id, stripePrice.id);
 
     return this.formatProductData(product);
   }
