@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const PorductTable = () => {
+const ProductTable = ({ setCurrentProductId, setOpenModal }) => {
   const [allProducts, setallProducts] = useState([]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const PorductTable = () => {
                 <div class="text-sm">
                   <div>
                     <span class="font-medium text-sky-600">{`${item.brand} `}</span>
-                    <span class="font-medium text-gray-600">{item.name}</span>
+                    <span class="font-medium text-gray-700">{item.name}</span>
                   </div>
                   <div class="text-gray-400">{item.itemType}</div>
                 </div>
@@ -119,7 +119,13 @@ const PorductTable = () => {
                       />
                     </svg>
                   </a>
-                  <a x-data="{ tooltip: 'Edite' }" href="#">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setCurrentProductId(item._id);
+                      setOpenModal(true);
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -135,7 +141,7 @@ const PorductTable = () => {
                         d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
                       />
                     </svg>
-                  </a>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -145,4 +151,4 @@ const PorductTable = () => {
     </div>
   );
 };
-export default PorductTable;
+export default ProductTable;
