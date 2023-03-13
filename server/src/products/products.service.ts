@@ -93,12 +93,28 @@ export class ProductsService {
     return this.formatProductData(product);
   }
 
+  updateStripeProductNameHelper(
+    newBrand: string,
+    newName: string,
+    oldBrand: string,
+    oldName: string,
+  ) {
+    const brandString = newBrand ? newBrand : oldBrand;
+    const nameString = newName ? newName : oldName;
+    return `${brandString} ${nameString}`;
+  }
+
   async update(id: string, userId: string, updateProductDto: UpdateProductDto) {
     //admin
     Logger.verbose(`This action updates a #${id} product`);
     // if (!(await this.usersService.isAdmin(userId)))
     //   throwError(UserErrors.USER_HAS_NO_PERMISION);
 
+    //find product in MongoDB
+    const foundProduct = await this.productModel.findById(id);
+    const { brand, name } = foundProduct;
+
+    // Update product in MongoDB
     const updatedProduct = await this.productModel.findByIdAndUpdate(
       id,
       updateProductDto,
@@ -106,6 +122,48 @@ export class ProductsService {
         new: true,
       },
     );
+
+    //find stripe product
+    const stripeProduct = await this.stripesService.getOneProductByName(
+      `${brand} ${name}`,
+    );
+    const foundStripeProduct = stripeProduct.data[0];
+
+    //update basic data
+    await this.stripesService.updateStripeProduct(foundStripeProduct.id, {
+      name: this.updateStripeProductNameHelper(
+        updateProductDto.brand,
+        updateProductDto.name,
+        foundProduct.brand,
+        foundProduct.name,
+      ),
+      description: updateProductDto.description
+        ? updateProductDto.description
+        : foundProduct.description,
+      images: updateProductDto.imgUrls
+        ? updateProductDto.imgUrls.filter((item) => item !== '')
+        : foundProduct.imgUrls,
+    });
+
+    //update price
+    if (updateProductDto.price) {
+      //set default_price: null
+      await this.stripesService.disableDefaultPrice(foundStripeProduct.id);
+
+      const createStripePriceDto: CreateStripePriceDto = {
+        stripeProductId: foundStripeProduct.id,
+        stripePrice: updateProductDto.price * 100,
+      };
+
+      const stripePrice = await this.stripesService.createPriceObject(
+        createStripePriceDto,
+      );
+
+      await this.stripesService.setDefaultPrice(
+        foundStripeProduct.id,
+        stripePrice.id,
+      );
+    }
     return this.formatProductData(updatedProduct);
   }
 
