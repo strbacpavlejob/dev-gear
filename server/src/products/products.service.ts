@@ -51,7 +51,6 @@ export class ProductsService {
     const product = await this.productModel.create(createProductDto);
     const createStripeProductDto: CreateStripeProductDto = {
       name: `${product.brand} ${product.name}`,
-      // name: product.name,
       description: product.description,
       images: product.imgUrls.filter((item) => item !== ''),
     };
@@ -114,7 +113,27 @@ export class ProductsService {
     Logger.verbose(`This action removes a #${id} product`);
     // if (!(await this.usersService.isAdmin(userId)))
     //   throwError(UserErrors.USER_HAS_NO_PERMISION);
+    //    const deltedProduct = await this.productModel.findByIdAndRemove(id);
+
+    //remove from MongoDB
     const deltedProduct = await this.productModel.findByIdAndRemove(id);
+    const { name, brand } = deltedProduct;
+
+    //remove from stripe
+    //find product on stripe
+    const stripeProduct = await this.stripesService.getOneProductByName(
+      `${brand} ${name}`,
+    );
+    const foundStripeProduct = stripeProduct.data[0];
+    //set default_price: null
+    await this.stripesService.disableDefaultPrice(foundStripeProduct.id);
+    //set active: false
+    await this.stripesService.deletePrice(
+      foundStripeProduct.default_price as string,
+    );
+    // set product active:false
+    await this.stripesService.archiveStripeProduct(foundStripeProduct.id);
+
     return this.formatProductData(deltedProduct);
   }
 

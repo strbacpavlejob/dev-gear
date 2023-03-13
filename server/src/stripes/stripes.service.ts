@@ -40,7 +40,7 @@ export class StripesService {
   async getOneProductByName(name: string) {
     Logger.verbose(`This action returns one stripe product with name:${name}`);
     const product = await this.stripe.products.search({
-      query: `name~"${name}"`,
+      query: `active:"true" AND name~"${name}"`,
     });
     return product;
   }
@@ -62,10 +62,35 @@ export class StripesService {
     return product;
   }
 
+  async disableDefaultPrice(id: string) {
+    try {
+      Logger.verbose(
+        `This action disables a default price for a #${id} stripe product`,
+      );
+      await this.stripe.products.update(id, { default_price: null });
+    } catch (error) {
+      Logger.error(`Error in disableDefaultPrice ${error}`);
+    }
+  }
+
+  async deletePrice(id: string) {
+    try {
+      Logger.verbose(`This action removes a #${id} stripe price`);
+      await this.stripe.prices.update(id, { active: false });
+    } catch (error) {
+      Logger.error(`Error in deletePrice ${error}`);
+    }
+  }
+
   async deleteOneProduct(id: string) {
-    Logger.verbose(`This action removes a #${id} stripe product`);
-    const deletedProduct = await this.stripe.products.del(id);
-    return deletedProduct;
+    try {
+      Logger.verbose(`This action removes a #${id} stripe product`);
+      const deletedProduct = await this.stripe.products.del(id);
+      return deletedProduct;
+    } catch (error) {
+      Logger.error(`Error in deleteOneProduct ${error}`);
+      return;
+    }
   }
 
   async archiveStripeProduct(id: string) {
