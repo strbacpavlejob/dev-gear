@@ -102,6 +102,8 @@ const AdminForm = ({ openModal, setOpenModal, productId = null }) => {
         )
         .then(() => {
           resetForm();
+          setOpenModal(false);
+          window.location.replace("/admin");
         });
     } else {
       axios
@@ -122,6 +124,8 @@ const AdminForm = ({ openModal, setOpenModal, productId = null }) => {
         )
         .then(() => {
           resetForm();
+          setOpenModal(false);
+          window.location.replace("/admin");
         });
     }
   };

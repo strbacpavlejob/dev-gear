@@ -16,7 +16,7 @@ export const filterItems = [
       { value: "Apple", label: "Apple", checked: false },
       { value: "Microsoft", label: "Microsoft", checked: false },
       { value: "Lenovo", label: "Lenovo", checked: false },
-      { value: "Apple", label: "Apple", checked: false },
+      { value: "Xiaomi", label: "Xiaomi", checked: false },
       { value: "Samsung", label: "Samsung", checked: false },
     ],
   },
