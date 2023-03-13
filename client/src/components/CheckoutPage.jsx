@@ -69,7 +69,7 @@ const CheckoutPage = (props) => {
     for (let i in itemsInCart) {
       let itemQuantity = itemsInCart[i].quantity;
       while (itemQuantity > 0) {
-        tempArray.push(itemsInCart[i].name);
+        tempArray.push(`${itemsInCart[i].brand} ${itemsInCart[i].name}`);
         itemQuantity--;
       }
     }

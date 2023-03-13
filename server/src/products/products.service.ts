@@ -50,7 +50,8 @@ export class ProductsService {
     //create product
     const product = await this.productModel.create(createProductDto);
     const createStripeProductDto: CreateStripeProductDto = {
-      name: product.name,
+      name: `${product.brand} ${product.name}`,
+      // name: product.name,
       description: product.description,
       images: product.imgUrls.filter((item) => item !== ''),
     };

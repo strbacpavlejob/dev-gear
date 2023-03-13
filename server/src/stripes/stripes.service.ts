@@ -37,6 +37,14 @@ export class StripesService {
     return product;
   }
 
+  async getOneProductByName(name: string) {
+    Logger.verbose(`This action returns one stripe product with name:${name}`);
+    const product = await this.stripe.products.search({
+      query: `name~"${name}"`,
+    });
+    return product;
+  }
+
   async updateStripeProduct(
     id: string,
     updateStripeDto: UpdateStripeProductDto,
