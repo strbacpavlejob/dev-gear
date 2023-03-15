@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import ProductContext from "../context/ProductContext";
 import summary from "../images/summary3.jpg";
 
@@ -34,6 +34,10 @@ const OrderSummary = (props) => {
     const tempTotal = sum + taxEstimate + 5;
     setTotal(tempTotal.toFixed(2));
   };
+
+  if (!(sessionStorage.getItem("isLogged") === "true")) {
+    return <Navigate to="/user/login" replace />;
+  }
 
   return (
     <>

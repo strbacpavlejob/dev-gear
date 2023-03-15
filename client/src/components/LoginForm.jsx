@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [logged, setLogged] = useState("");
-  const [user, setUser] = useState("");
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
 
@@ -27,8 +25,6 @@ const LoginForm = (props) => {
         sessionStorage.setItem("sessionToken", res.data.token);
         sessionStorage.setItem("isAdmin", res.data.isAdmin);
         sessionStorage.setItem("isLogged", true);
-        setLogged(res.data.user);
-        setUser(res.data.user);
         navigate("/");
       })
       .catch((err) => {

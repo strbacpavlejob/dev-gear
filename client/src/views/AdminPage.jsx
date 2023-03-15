@@ -3,9 +3,14 @@ import AdminForm from "../components/AdminForm";
 import NavBar from "../components/NavBar";
 import ProductTable from "../components/ProductTable";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { Navigate } from "react-router-dom";
 const AdminPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [currentProductId, setCurrentProductId] = useState(null);
+
+  if (!(sessionStorage.getItem("isAdmin") === "true")) {
+    return <Navigate to="/user/login" replace />;
+  }
 
   return (
     <div>

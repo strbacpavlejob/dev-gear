@@ -8,8 +8,6 @@ const RegisterForm = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [logged, setLogged] = useState("");
-  const [user, setUser] = useState("");
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
 
@@ -27,11 +25,25 @@ const RegisterForm = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        sessionStorage.setItem("userInSession", res.data.username);
-        sessionStorage.setItem("sessionToken", res.data.token);
-        setLogged(res.data.user);
-        setUser(res.data.user);
-        navigate("/");
+        axios
+          .post(
+            "http://localhost:8000/auth/local/signin",
+            {
+              email,
+              password,
+            },
+            { withCredentials: true }
+          )
+          .then((res) => {
+            sessionStorage.setItem("userInSession", res.data.username);
+            sessionStorage.setItem("sessionToken", res.data.token);
+            sessionStorage.setItem("isAdmin", res.data.isAdmin);
+            sessionStorage.setItem("isLogged", true);
+            navigate("/");
+          })
+          .catch((err) => {
+            setErrors(["Invalid Email/Password"]);
+          });
       })
       .catch((err) => {
         const errorRes = err.response.data.errors;

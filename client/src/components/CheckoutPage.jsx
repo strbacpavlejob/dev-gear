@@ -6,6 +6,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { useContext } from "react";
 import ProductContext from "../context/ProductContext";
+import { Navigate } from "react-router-dom";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -16,6 +17,7 @@ const CheckoutPage = (props) => {
   const [clientSecret, setClientSecret] = useState("");
   const [stripeProducts, setStripeProducts] = useState([]);
   const itemsInCart = useContext(ProductContext).itemsInCart;
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
     axios
@@ -109,6 +111,10 @@ const CheckoutPage = (props) => {
     clientSecret,
     appearance,
   };
+
+  if (!(sessionStorage.getItem("isLogged") === "true")) {
+    return <Navigate to="/user/login" replace />;
+  }
 
   return (
     <>
