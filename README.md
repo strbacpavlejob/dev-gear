@@ -23,11 +23,11 @@ There are two folders **server** and **client**. Both have **.env** files for th
  1. Open project in terminal 
  2. Go to client folder  `cd client/`
  3. Install needed packages`npm install`
- 4. Rename the **.example.env** to **.env**
+ 4. Rename the **.env.example** to **.env**
  5. Fill variables using your Stripe API key
  6. Go to server folder  `cd server/`
  7. Install needed packages`npm install`
- 8. Rename the **.example.env** to **.env**
+ 8. Rename the **.env.example** to **.env**
  9. Fill variables using your Stripe API key and JWT 
 
 # Running the Project

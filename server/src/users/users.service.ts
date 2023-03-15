@@ -38,7 +38,7 @@ export class UsersService {
       saltOrRounds,
     );
 
-    // create admin if it not exists
+    // create admin if not exists
     const admins = await this.userModel.find({ isAdmin: true });
     const isAdmin = admins.length === 0;
 
