@@ -38,10 +38,15 @@ export class UsersService {
       saltOrRounds,
     );
 
+    // create admin if it not exists
+    const admins = await this.userModel.find({ isAdmin: true });
+    const isAdmin = admins.length === 0;
+
     const user = await this.userModel.create({
       userName: createUserDto.username,
       email: createUserDto.email,
       passwordHash,
+      isAdmin,
     });
     return this.formatUserData(user);
   }
