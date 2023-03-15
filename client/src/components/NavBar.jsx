@@ -244,12 +244,9 @@ const NavBar = (props) => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("isAdmin") === "null") {
-      setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
-    } else {
-      setIsAdmin(sessionStorage.getItem("userInSession"));
-    }
-  }, [isAdmin]);
+    const newIsAdmin = JSON.parse(sessionStorage.getItem("isAdmin"));
+    setIsAdmin(newIsAdmin);
+  }, [sessionStorage.getItem("isAdmin")]);
 
   useEffect(() => {
     if (sessionStorage.getItem("userInSession") === "null") {
@@ -264,6 +261,7 @@ const NavBar = (props) => {
     sessionStorage.setItem("userInSession", null);
     sessionStorage.setItem("sessionToken", null);
     sessionStorage.setItem("isAdmin", null);
+    sessionStorage.setItem("isLogged", null);
     setIsAdmin(false);
     window.location.replace("/");
   };

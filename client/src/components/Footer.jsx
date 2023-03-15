@@ -1,6 +1,6 @@
 const Footer = (props) => {
   return (
-    <footer className="bg-gradient-to-r from-dark-blue via-light-blue to-blue fixed bottom-0 w-full">
+    <footer className="bg-gradient-to-r from-dark-blue via-light-blue to-blue w-full bottom-0 left-0 bg-red-500">
       <div className="mx-auto max-w-7xl overflow-hidden py-10 px-6 sm:py-12 lg:px-8 flex flex-col">
         <h2 className="text-center text-white font-fugaz text-2xl pb-9">
           DEV GEAR

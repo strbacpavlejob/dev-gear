@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AdminForm from "../components/AdminForm";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 import ProductTable from "../components/ProductTable";
 import { PlusIcon } from "@heroicons/react/24/outline";
 const AdminPage = () => {
@@ -24,17 +23,18 @@ const AdminPage = () => {
             <span>Add product</span>
           </div>
         </div>
-        <ProductTable
-          setCurrentProductId={setCurrentProductId}
-          setOpenModal={setOpenModal}
-        />
-        <AdminForm
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          productId={currentProductId}
-        />
+        <div className="flex flex-1">
+          <ProductTable
+            setCurrentProductId={setCurrentProductId}
+            setOpenModal={setOpenModal}
+          />
+          <AdminForm
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            productId={currentProductId}
+          />
+        </div>
       </div>
-      <Footer />
     </div>
   );
 };
