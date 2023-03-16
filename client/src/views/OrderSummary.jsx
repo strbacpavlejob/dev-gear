@@ -18,7 +18,10 @@ const OrderSummary = (props) => {
     orderTotal(sessionItemsInCart);
     setItemsInOrder([...sessionItemsInCart]);
     setShippingInfo({ ...sessionShippingInfo });
-    sessionStorage.clear();
+
+    sessionStorage.removeItem("itemsInCart");
+    sessionStorage.removeItem("numInCart");
+    sessionStorage.removeItem("shippingInfo");
   }, []);
 
   const orderTotal = (products) => {
