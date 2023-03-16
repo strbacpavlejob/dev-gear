@@ -157,12 +157,18 @@ const SlidingCart = (props) => {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <Link
-                          to="/cart"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-dark-blue px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-light-blue"
-                        >
-                          Checkout
-                        </Link>
+                        {subtotal === 0 ? (
+                          <div className="flex items-center justify-center rounded-md border border-transparent bg-slate-500 px-6 py-3 text-base font-medium text-white shadow-sm">
+                            Checkout
+                          </div>
+                        ) : (
+                          <Link
+                            to="/cart"
+                            className="flex items-center justify-center rounded-md border border-transparent bg-dark-blue px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-light-blue"
+                          >
+                            Checkout
+                          </Link>
+                        )}
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
