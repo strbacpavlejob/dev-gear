@@ -25,7 +25,12 @@ const ProductPage = (props) => {
     axios
       .get("http://localhost:8000/products/" + id)
       .then((res) => {
-        setItem({ ...res.data, quantity: 1, plug: res.data.plug[0] });
+        setItem({
+          ...res.data,
+          quantity: 1,
+          plug: res.data.plug[0],
+          color: res.data.colors[0],
+        });
         setPlugs([...res.data.plug]);
         setColors([...res.data.colors]);
         setProductPlug(res.data.plug[0]);
@@ -42,7 +47,8 @@ const ProductPage = (props) => {
       for (let i in currentProducts) {
         if (
           Object.values(currentProducts[i]).includes(item._id) &&
-          Object.values(currentProducts[i]).includes(item.plug)
+          Object.values(currentProducts[i]).includes(item.plug) &&
+          Object.values(currentProducts[i]).includes(item.color)
         ) {
           currentProducts[i].quantity++;
           sessionStorage.setItem(
