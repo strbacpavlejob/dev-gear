@@ -151,16 +151,20 @@ const SideBar = (props) => {
 
   const handleSort = useCallback(
     (sortBy, orderBy) => {
-      setSort(sortBy);
-      setOrder(orderBy);
       setFilterQuery({
         ...filterQuery,
-        sort,
-        order,
+        sort: sortBy,
+        order: orderBy,
       });
+      setSort(sortBy);
+      setOrder(orderBy);
     },
     [sort, order]
   );
+
+  useEffect(() => {
+    handleApplyFilters();
+  }, [sort, order]);
 
   return (
     <div className="bg-white">
@@ -269,7 +273,7 @@ const SideBar = (props) => {
                       </Menu.Item>
                       <Menu.Item>
                         <p
-                          onClick={(e) => handleSort("name", "dsc")}
+                          onClick={(e) => handleSort("name", "desc")}
                           className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                         >
                           Name: Z to A
@@ -286,7 +290,7 @@ const SideBar = (props) => {
                       </Menu.Item>
                       <Menu.Item id="high">
                         <p
-                          onClick={(e) => handleSort("price", "dsc")}
+                          onClick={(e) => handleSort("price", "desc")}
                           id="high"
                           className="block px-4 py-2 text-sm cursor-pointer hover:bg-light-blue hover:text-white"
                         >

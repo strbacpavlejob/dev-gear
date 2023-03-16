@@ -19,17 +19,17 @@ const navigation = {
       featured: [
         {
           name: "Trending",
-          href: "/products/view-trending",
+          href: "/products/view-all",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image63e10e2e0de22.jpg",
+            "https://images.unsplash.com/photo-1634042148057-32603ec95d95?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
           imageAlt: "",
           p: "",
         },
         {
           name: "New Arrivals",
-          href: "/products/new-arrivals",
+          href: "/products/view-all",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image62679d32b86a2.jpg",
+            "https://images.unsplash.com/photo-1587614297882-0954a02d57f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
           imageAlt: "",
           p: "",
         },
@@ -67,19 +67,17 @@ const navigation = {
       featured: [
         {
           name: "Trending",
-          href: "#",
+          href: "/products/view-all?itemTypes=Laptop",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image6332a96c0a42d.png",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1593642633279-1796119d5482?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80",
+          imageAlt: "",
         },
         {
           name: "New Arrivals",
-          href: "#",
+          href: "/products/view-all?itemTypes=Laptop",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image62679d32b86a2.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+          imageAlt: "",
         },
       ],
       sections: [
@@ -120,19 +118,17 @@ const navigation = {
       featured: [
         {
           name: "Trending",
-          href: "#",
+          href: "/products/view-all?itemTypes=Smartphone",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image63e10e2e0de22.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1614439071514-edee4ec26882?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80",
+          imageAlt: "",
         },
         {
           name: "New Arrivals",
-          href: "#",
+          href: "/products/view-all?itemTypes=Smartphone",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image61fbf9b09a7c2.png",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+          imageAlt: "",
         },
       ],
       sections: [
@@ -173,19 +169,17 @@ const navigation = {
       featured: [
         {
           name: "Trending",
-          href: "#",
+          href: "/products/view-all?itemTypes=Tablet",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/LENOVO-Tab-M10-FHD-Plus-4-64GB-LTE-ZA5V0208RS-Iron-Grey-(Siva)--92.png",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+          imageAlt: "",
         },
         {
           name: "New Arrivals",
-          href: "#",
+          href: "/products/view-all?itemTypes=Tablet",
           imageSrc:
-            "https://img.gigatron.rs/img/products/large/image63da285a24c41.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
+            "https://images.unsplash.com/photo-1622533950960-2ed47209dab0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1209&q=80",
+          imageAlt: "",
         },
       ],
       sections: [

@@ -273,7 +273,7 @@ export class ProductsService {
 
     if (sort && order) {
       sortQuery = {
-        [sort]: order === 'dsc' ? -1 : 1,
+        [sort]: order === 'desc' ? -1 : 1,
       };
     }
 
